@@ -28,6 +28,10 @@ public class Position {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    public Position offset(int dx, int dy) {
+        return new Position(this.x + dx, this.y + dy);
+    }
+
     public boolean equals(Position other) {
         return this.x == other.x && this.y == other.y;
     }

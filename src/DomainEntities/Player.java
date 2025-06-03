@@ -57,6 +57,10 @@ public abstract class Player extends Unit implements HeroicUnit {
         this.messageCallback = callback;
     }
 
+    public void initialize(MessageCallback callback) {
+        this.messageCallback = callback;
+    }
+
 
     public abstract void onGameTick();
     public abstract void castAbility();

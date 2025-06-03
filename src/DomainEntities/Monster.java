@@ -2,6 +2,7 @@ package DomainEntities;
 
 import java.util.Random;
 
+
 public class Monster extends Enemy {
     // _____Fields_____
     private final int visionRange;
@@ -9,10 +10,17 @@ public class Monster extends Enemy {
 
 
     //_____Constructor_____
-    public Monster(String name, char tileChar, Position position, int healthPool, int attack, int defense, int experienceValue, int visionRange) {
+    public Monster(String name, char tileChar, Position position, int healthPool, int attack,
+                   int defense, int experienceValue, int visionRange) {
         super(name, tileChar, position, healthPool, attack, defense, experienceValue);
         this.visionRange = visionRange;
     }
+
+    public Monster(Monster other, Position position) {
+        super(other.getName(), other.tileChar, position, other.getHealthPool(), other.getAttack(), other.getDefense(), other.getExperienceValue());
+        this.visionRange = other.visionRange;
+    }
+
 
 
     // _____Methods_____
@@ -21,7 +29,7 @@ public class Monster extends Enemy {
     }
 
     @Override
-    public void onEnemyTurn(Player player) {
+    public Direction decideMoveDirection(Player player) {
         double distance = position.distance(player.getPosition());
 
         if (distance < visionRange) {
@@ -29,51 +37,37 @@ public class Monster extends Enemy {
             int dy = player.getPosition().getY() - position.getY();
 
             if (Math.abs(dx) > Math.abs(dy)) {
-                if (dx > 0)
-                    moveRight();
-                else
-                    moveLeft();
-            } else {
-                if (dy > 0)
-                    moveDown();
-                else
-                    moveUp();
+                return dx > 0 ? Direction.RIGHT : Direction.LEFT;
             }
-        } else {
-            performRandomMove();
+            else {
+                return dy > 0 ? Direction.DOWN : Direction.UP;
+            }
+        }
+        else {
+            return randomMove();
         }
     }
 
-    private void moveUp() {
-        // TBD: implement via game engine or board logic
+    private Direction randomMove() {
+        int r = random.nextInt(5);
+        return switch (r) {
+            case 0 -> Direction.UP;
+            case 1 -> Direction.DOWN;
+            case 2 -> Direction.LEFT;
+            case 3 -> Direction.RIGHT;
+            default -> Direction.STAY;
+        };
     }
 
-    private void moveDown() {
-        // TBD
-    }
-
-    private void moveLeft() {
-        // TBD
-    }
-
-    private void moveRight() {
-        // TBD
-    }
-
-    private void performRandomMove() {
-        int r = random.nextInt(5); // 0: up, 1: down, 2: left, 3: right, 4: stay
-        switch (r) {
-            case 0 -> moveUp();
-            case 1 -> moveDown();
-            case 2 -> moveLeft();
-            case 3 -> moveRight();
-            default -> {} // stay in place
-        }
-    }
 
     @Override
     public void onGameTick() {
         // For monster, tick = no special update
+    }
+
+    @Override
+    public void onEnemyTurn(Player player) {
+        // No movement here. GameLevel should handle actual movement using decideMoveDirection.
     }
 
     @Override
