@@ -41,6 +41,8 @@ public class GameEngine implements MessageCallback {
             }
 
             if (loadedLevel.getPlayer().isDead()) {
+                loadedLevel.getPlayer().deadChar();
+                System.out.println(gameLevel.render());
                 System.out.println("You died. Game over.");
                 return;
             }

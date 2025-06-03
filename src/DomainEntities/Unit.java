@@ -42,8 +42,6 @@ public abstract class Unit extends Tile {
 
 
     // _____Methods_____
-
-
     public boolean isDead() {
         return currentHealth <= 0;
     }
@@ -60,6 +58,8 @@ public abstract class Unit extends Tile {
         currentHealth = Math.max(0, currentHealth - damage);
     }
 
+    public abstract void onGameTick();
+
     @Override
     public String toString() {
         return String.valueOf(tileChar);
@@ -69,7 +69,23 @@ public abstract class Unit extends Tile {
         this.position = newPos;
     }
 
-    public abstract void onGameTick();
     public abstract String description();
+
+
+    // _____Visitor_Pattern_____
     public abstract void accept(Unit other);
+
+    public void visit(WallTile wall) {
+        // Do nothing
+    }
+
+    public void visit(EmptyTile empty) {
+        setPosition(empty.getPosition());
+    }
+
+    public abstract void visit(Player player);
+
+    public abstract void visit(Monster monster);
+
+    public abstract void visit(Trap trap);
 }

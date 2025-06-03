@@ -16,7 +16,7 @@ public class Mage extends Player {
 
     //_____Constructor_____
     public Mage(String name, Position position, int healthPool, int attack, int defense, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange) {
-        super(name, '@', position, healthPool, attack, defense);
+        super(name, position, healthPool, attack, defense);
         this.manaPool = manaPool;
         this.currentMana = manaPool / 4;
         this.manaCost = manaCost;

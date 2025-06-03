@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Warrior extends Player {
+
     // _____Fields_____
     private final int abilityCooldown;
     private int remainingCooldown;

@@ -1,6 +1,7 @@
 package DomainEntities;
 
 public abstract class Player extends Unit implements HeroicUnit {
+
     // _____Fields_____
     protected int experience;
     protected int level;
@@ -8,8 +9,8 @@ public abstract class Player extends Unit implements HeroicUnit {
 
 
     //_____Constructor_____
-    public Player(String name, char tileChar, Position position, int healthPool, int attack, int defense) {
-        super(name, tileChar, position, healthPool, attack, defense);
+    public Player(String name, Position position, int healthPool, int attack, int defense) {
+        super(name, '@', position, healthPool, attack, defense);
         this.level = 1;
         this.experience = 0;
     }
@@ -47,12 +48,6 @@ public abstract class Player extends Unit implements HeroicUnit {
         return experience >= 50 * level;
     }
 
-
-    protected void denySpecialAbility() throws Exception{
-        throw new Exception("You don't have enough resources" +
-                "to case special ability!");
-    }
-
     public void setMessageCallback(MessageCallback callback) {
         this.messageCallback = callback;
     }
@@ -61,10 +56,45 @@ public abstract class Player extends Unit implements HeroicUnit {
         this.messageCallback = callback;
     }
 
+    public void engage(Enemy enemy) {
+        int atk = rollAttack();
+        int def = enemy.rollDefense();
+        int dmg = Math.max(0, atk - def);
+        messageCallback.send(getName() + " engaged " + enemy.getName() + " for " + dmg + " damage.");
+        enemy.takeDamage(dmg);
+
+        if (enemy.isDead()) {
+            gainExperience(enemy.getExperienceValue());
+            messageCallback.send(enemy.getName() + " died.");
+        }
+    }
+
+    public void deadChar(){
+        tileChar = 'X';
+    }
 
     public abstract void onGameTick();
     public abstract void castAbility();
     public abstract String description();
-    public abstract void accept(Unit other);
+
+
+    // _____Visitor_Pattern_____
+    public void accept(Unit other){
+        other.visit(this);
+    }
+
+    public void visit(Player player) {
+        // Impossible.
+    }
+
+    public void visit(Monster monster){
+        engage(monster);
+    }
+
+    public void visit(Trap trap){
+        engage(trap);
+    }
+
+
 
 }

@@ -8,8 +8,7 @@ public class EmptyTile extends Tile {
 
     @Override
     public void accept(Unit unit) {
-        // פשוט מעדכנים את המיקום של היחידה
-        unit.setPosition(this.position);
+        unit.visit(this);
     }
 
     @Override
