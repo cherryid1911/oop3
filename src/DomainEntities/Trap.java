@@ -9,7 +9,8 @@ public class Trap extends Enemy {
 
 
     //_____Constructor_____
-    public Trap(String name, char tileChar, Position position, int healthPool, int attack, int defense, int experienceValue, int visibilityTime, int invisibilityTime) {
+    public Trap(String name, char tileChar, Position position, int healthPool,
+                int attack, int defense, int experienceValue, int visibilityTime, int invisibilityTime) {
         super(name, tileChar, position, healthPool, attack, defense, experienceValue);
         this.visibilityTime = visibilityTime;
         this.invisibilityTime = invisibilityTime;
@@ -17,8 +18,26 @@ public class Trap extends Enemy {
         this.visible = true;
     }
 
+    public Trap(Trap other, Position position) {
+        super(other.getName(), other.tileChar, position, other.getHealthPool(), other.getAttack(), other.getDefense(), other.getExperienceValue());
+        this.visibilityTime = other.visibilityTime;
+        this.invisibilityTime = other.invisibilityTime;
+        this.ticksCount = other.ticksCount;
+        this.visible = other.visible;
+    }
+
+
 
     // _____Methods_____
+    public int getVisibilityTime() {
+        return visibilityTime;
+    }
+
+    public int getInvisibilityTime() {
+        return invisibilityTime;
+    }
+
+
     @Override
     public void onGameTick() {
         ticksCount++;
@@ -49,6 +68,11 @@ public class Trap extends Enemy {
     public String description() {
         return String.format("Trap %s\tHP: %d/%d\tATK: %d\tDEF: %d\tEXP: %d\tVisible: %s",
                 name, currentHealth, healthPool, attack, defense, experienceValue, visible);
+    }
+
+    @Override
+    public Direction decideMoveDirection(Player player) {
+        return Direction.STAY;
     }
 
     @Override

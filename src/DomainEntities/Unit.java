@@ -42,6 +42,8 @@ public abstract class Unit extends Tile {
 
 
     // _____Methods_____
+
+
     public boolean isDead() {
         return currentHealth <= 0;
     }
@@ -61,6 +63,10 @@ public abstract class Unit extends Tile {
     @Override
     public String toString() {
         return String.valueOf(tileChar);
+    }
+
+    public void setPosition(Position newPos) {
+        this.position = newPos;
     }
 
     public abstract void onGameTick();

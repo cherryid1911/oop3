@@ -14,9 +14,15 @@ public abstract class Enemy extends Unit {
 
 
     // _____Methods_____
+    public void initialize(MessageCallback callback) {
+        this.messageCallback = callback;
+    }
+
     public int getExperienceValue() {
         return experienceValue;
     }
+
+    public abstract Direction decideMoveDirection(Player player);
 
     public abstract void onEnemyTurn(Player player);
 

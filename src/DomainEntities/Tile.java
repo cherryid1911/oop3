@@ -22,6 +22,8 @@ public abstract class Tile {
         return position;
     }
 
+    public abstract void accept(Unit unit);
+
     public abstract String toString();
 
 }
