@@ -1,6 +1,7 @@
 package DomainEntities;
 
 public class Trap extends Enemy {
+
     // _____Fields_____
     private final int visibilityTime;
     private final int invisibilityTime;
@@ -8,7 +9,7 @@ public class Trap extends Enemy {
     private boolean visible;
 
 
-    //_____Constructor_____
+    //_____Constructors_____
     public Trap(String name, char tileChar, Position position, int healthPool,
                 int attack, int defense, int experienceValue, int visibilityTime, int invisibilityTime) {
         super(name, tileChar, position, healthPool, attack, defense, experienceValue);
@@ -76,12 +77,21 @@ public class Trap extends Enemy {
     }
 
     @Override
-    public void accept(Unit other) {
-        // Visitor pattern
-    }
-
-    @Override
     public String toString() {
         return visible ? String.valueOf(tileChar) : ".";
     }
+
+
+    // _____Visitor_Pattern_____
+    @Override
+    public void accept(Unit other) {
+        other.visit(this);
+    }
+
+    @Override
+    public void visit(Player player) {
+        // Impossible.
+    }
+
+
 }

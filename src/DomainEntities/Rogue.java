@@ -12,7 +12,7 @@ public class Rogue extends Player {
 
     //_____Constructor_____
     public Rogue(String name, Position position, int healthPool, int attack, int defense, int energyCost) {
-        super(name, '@', position, healthPool, attack, defense);
+        super(name, position, healthPool, attack, defense);
         this.energyCost = energyCost;
         this.currentEnergy = maxEnergy;
     }

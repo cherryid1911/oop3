@@ -44,7 +44,7 @@ public class GameLevel {
 
         if (newPos != null && isInsideBoard(newPos)) {
             Tile tile = board.getTile(newPos);
-            tile.accept(player);  // מבקר את התא, מפעיל Visitor pattern
+            tile.accept(player);  // Visitor pattern
         }
 
         player.onGameTick();
@@ -59,7 +59,8 @@ public class GameLevel {
                 if (newPos2 != null && isInsideBoard(newPos2)) {
                     board.getTile(newPos2).accept(enemy);
                 }
-            } else {
+            }
+            else {
                 board.setTile(enemy.getPosition(), new EmptyTile(enemy.getPosition()));
                 messageCallback.send(enemy.getName() + " was slain!");
                 it.remove();

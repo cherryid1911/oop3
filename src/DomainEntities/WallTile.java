@@ -1,13 +1,16 @@
 package DomainEntities;
 
 public class WallTile extends Tile {
+
+    //_____Constructor_____
     public WallTile(Position position) {
         super('#', position);
     }
 
+    // _____Methods_____
     @Override
     public void accept(Unit unit) {
-        // לא עושים כלום – אי אפשר לעבור קיר
+        unit.visit(this);
     }
 
     @Override

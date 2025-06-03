@@ -1,6 +1,7 @@
 package DomainEntities;
 
 public abstract class Enemy extends Unit {
+
     // _____Fields_____
     protected final int experienceValue;
     protected MessageCallback messageCallback;
@@ -30,8 +31,23 @@ public abstract class Enemy extends Unit {
     public abstract String description();
 
     @Override
+    public abstract void onGameTick();
+
+
+    // _____Visitor_Pattern_____
+    @Override
     public abstract void accept(Unit other);
 
     @Override
-    public abstract void onGameTick();
+    public abstract void visit(Player player);
+
+    @Override
+    public void visit(Monster monster) {
+        // Do nothing.
+    }
+
+    @Override
+    public void visit(Trap trap){
+        // Do nothing.
+    }
 }

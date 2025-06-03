@@ -9,7 +9,7 @@ public class Monster extends Enemy {
     private final Random random = new Random();
 
 
-    //_____Constructor_____
+    //_____Constructors_____
     public Monster(String name, char tileChar, Position position, int healthPool, int attack,
                    int defense, int experienceValue, int visionRange) {
         super(name, tileChar, position, healthPool, attack, defense, experienceValue);
@@ -76,10 +76,23 @@ public class Monster extends Enemy {
                 name, currentHealth, healthPool, attack, defense, experienceValue, visionRange);
     }
 
+
+    // _____Visitor_Pattern_____
     @Override
     public void accept(Unit other) {
-        // Visitor pattern
+        other.visit(this);
     }
 
+    @Override
+    public void visit(Player player) {
+        int attackRoll = this.rollAttack();
+        int defenseRoll = player.rollDefense();
+        int damage = Math.max(0, attackRoll - defenseRoll);
+        player.takeDamage(damage);
+        messageCallback.send(name + " attacked " + player.getName() + " for " + damage + " damage.");
+        if (player.isDead()) {
+            messageCallback.send(player.getName() + " died!");
+        }
+    }
 
 }
