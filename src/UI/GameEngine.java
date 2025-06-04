@@ -11,12 +11,14 @@ import java.nio.file.*;
 import java.util.*;
 
 public class GameEngine implements MessageCallback {
+
     // _____Fields_____
     private final Scanner scanner = new Scanner(System.in);
     private final List<LoadedLevel> levels = new ArrayList<>();
     private Player player;
     private List<Player> playerOptions;
     private boolean testMode = false;
+
 
     // _____Methods_____
     @Override
@@ -33,7 +35,7 @@ public class GameEngine implements MessageCallback {
             GameLevel gameLevel = new GameLevel(loadedLevel.getBoard(), loadedLevel.getPlayer(), loadedLevel.getEnemies(), this);
 
             while (!loadedLevel.getPlayer().isDead() && !gameLevel.isLevelComplete()) {
-                System.out.println(gameLevel.render());
+                System.out.println(gameLevel.display());
                 System.out.print("Enter command (w/a/s/d/e/q): ");
                 String input = scanner.nextLine();
                 if (!input.isEmpty()) {
@@ -43,7 +45,7 @@ public class GameEngine implements MessageCallback {
 
             if (loadedLevel.getPlayer().isDead()) {
                 loadedLevel.getPlayer().deadChar();
-                System.out.println(gameLevel.render());
+                System.out.println(gameLevel.display());
                 System.out.println("You died. Game over.");
                 return;
             }

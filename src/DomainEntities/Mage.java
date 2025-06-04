@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Mage extends Player {
+
     // _____Fields_____
     private int manaPool;
     protected int currentMana;
@@ -15,8 +16,8 @@ public class Mage extends Player {
 
 
     //_____Constructor_____
-    public Mage(String name, Position position, int healthPool, int attack, int defense, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange) {
-        super(name, position, healthPool, attack, defense);
+    public Mage(String name, int healthPool, int attack, int defense, int manaPool, int manaCost, int spellPower, int hitsCount, int abilityRange) {
+        super(name, healthPool, attack, defense);
         this.manaPool = manaPool;
         this.currentMana = manaPool / 4;
         this.manaCost = manaCost;
@@ -33,13 +34,13 @@ public class Mage extends Player {
     }
 
     @Override
-    public void castAbility() {
+    public void castAbility(Player player) {
         if (currentMana < manaCost) {
             messageCallback.send(name + " tried to cast Blizzard, but doesn't have enough mana (" + currentMana + "/" + manaCost + ").");
             return;
         }
 
-        List<Unit> enemies = getEnemiesInRange(abilityRange);
+        List<Enemy> enemies = getEnemiesInRange(abilityRange);
         if (enemies.isEmpty()) {
             messageCallback.send(name + " tried to cast Blizzard, but no enemies are in range.");
             return;
@@ -58,7 +59,6 @@ public class Mage extends Player {
                     name, target.getName(), damage, defenseRoll));
             if (target.isDead()) {
                 messageCallback.send(target.getName() + " died!");
-                // אפשר להסיר אותו מהרשימה:
                 enemies.remove(target);
             }
             hits++;
@@ -77,15 +77,6 @@ public class Mage extends Player {
     public String description() {
         return String.format("Mage %s\tLevel %d\tXP: %d\tHP: %d/%d\tMana: %d/%d\tSP: %d",
                 name, level, experience, currentHealth, healthPool, currentMana, manaPool, spellPower);
-    }
-
-    @Override
-    public void accept(Unit other) {}
-
-
-    /// PLACEHOLDER
-    protected List<Unit> getEnemiesInRange(int range) {
-        throw new UnsupportedOperationException("getEnemiesInRange should be set from Game context.");
     }
 
     public int getCurrentMana() {

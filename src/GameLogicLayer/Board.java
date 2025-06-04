@@ -3,6 +3,7 @@ package GameLogicLayer;
 import DomainEntities.*;
 
 public class Board {
+
     // _____Fields_____
     private final int rows;
     private final int cols;
@@ -36,14 +37,4 @@ public class Board {
         tiles[position.getY()][position.getX()] = tile;
     }
 
-    public void display(MessageCallback callback) {
-        StringBuilder builder = new StringBuilder();
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                builder.append(tiles[y][x].toString());
-            }
-            builder.append("\n");
-        }
-        callback.send(builder.toString());
-    }
 }

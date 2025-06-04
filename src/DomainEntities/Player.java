@@ -1,16 +1,19 @@
 package DomainEntities;
 
+import java.util.List;
+
 public abstract class Player extends Unit implements HeroicUnit {
 
     // _____Fields_____
     protected int experience;
     protected int level;
     protected MessageCallback messageCallback;
+    protected List<Enemy> enemies;
 
 
     //_____Constructor_____
-    public Player(String name, Position position, int healthPool, int attack, int defense) {
-        super(name, '@', position, healthPool, attack, defense);
+    public Player(String name, int healthPool, int attack, int defense) {
+        super(name, '@', new Position(0, 0), healthPool, attack, defense);
         this.level = 1;
         this.experience = 0;
     }
@@ -73,8 +76,19 @@ public abstract class Player extends Unit implements HeroicUnit {
         tileChar = 'X';
     }
 
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
+    }
+
+    protected List<Enemy> getEnemiesInRange(int range) {
+        return enemies.stream()
+                .filter(e -> !e.isDead())
+                .filter(e -> position.distance(e.getPosition()) <= range)
+                .toList();
+    }
+
     public abstract void onGameTick();
-    public abstract void castAbility();
+    public abstract void castAbility(Player player);
     public abstract String description();
 
 

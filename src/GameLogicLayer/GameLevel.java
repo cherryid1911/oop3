@@ -22,6 +22,7 @@ public class GameLevel {
         this.enemies = new ArrayList<>(enemies);
         this.messageCallback = messageCallback;
         this.player.initialize(messageCallback);
+        this.player.setEnemies(this.enemies);
         for (Enemy e : enemies) {
             e.initialize(messageCallback);
         }
@@ -37,14 +38,14 @@ public class GameLevel {
             case 's' -> newPos = player.getPosition().offset(0, 1);
             case 'a' -> newPos = player.getPosition().offset(-1, 0);
             case 'd' -> newPos = player.getPosition().offset(1, 0);
-            case 'e' -> player.castAbility();
+            case 'e' -> player.castAbility(player);
             case 'q' -> messageCallback.send("Player chose to wait.");
             default -> messageCallback.send("Invalid input: " + input);
         }
 
         if (newPos != null && isInsideBoard(newPos)) {
             Tile tile = board.getTile(newPos);
-            tile.accept(player);  // Visitor pattern
+            tile.accept(player);
         }
 
         player.onGameTick();
@@ -52,13 +53,13 @@ public class GameLevel {
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy enemy = it.next();
-            enemy.onGameTick();
             if (!enemy.isDead()) {
-                Direction dir = enemy.decideMoveDirection(player);
+                enemy.onGameTick();
+                enemy.onEnemyTurn(player);
+                Direction dir = enemy.onEnemyTurn(player);
                 Position newPos2 = getNextPosition(enemy.getPosition(), dir);
-                if (newPos2 != null && isInsideBoard(newPos2)) {
+                if (newPos2 != null && isInsideBoard(newPos2))
                     board.getTile(newPos2).accept(enemy);
-                }
             }
             else {
                 board.setTile(enemy.getPosition(), new EmptyTile(enemy.getPosition()));
@@ -87,7 +88,7 @@ public class GameLevel {
         return enemies.isEmpty();
     }
 
-    public String render() {
+    public String display() {
         StringBuilder sb = new StringBuilder();
 
         for (int y = 0; y < board.getRows(); y++) {

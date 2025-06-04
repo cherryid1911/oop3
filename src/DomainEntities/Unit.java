@@ -1,6 +1,7 @@
 package DomainEntities;
 
 public abstract class Unit extends Tile {
+
     // _____Fields_____
     protected String name;
     protected int healthPool;
@@ -18,6 +19,7 @@ public abstract class Unit extends Tile {
         this.attack = attack;
         this.defense = defense;
     }
+
 
     // _____Getters_____
     public String getName() {

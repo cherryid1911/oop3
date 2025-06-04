@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rogue extends Player {
+
     // _____Fields_____
     private final int energyCost;
     protected int currentEnergy;
@@ -11,8 +12,8 @@ public class Rogue extends Player {
 
 
     //_____Constructor_____
-    public Rogue(String name, Position position, int healthPool, int attack, int defense, int energyCost) {
-        super(name, position, healthPool, attack, defense);
+    public Rogue(String name, int healthPool, int attack, int defense, int energyCost) {
+        super(name, healthPool, attack, defense);
         this.energyCost = energyCost;
         this.currentEnergy = maxEnergy;
     }
@@ -25,14 +26,14 @@ public class Rogue extends Player {
     }
 
     @Override
-    public void castAbility() {
+    public void castAbility(Player player) {
         if (currentEnergy < energyCost) {
             messageCallback.send(name + " tried to use Fan of Knives, but doesn't have enough energy (" +
                     currentEnergy + "/" + energyCost + ").");
             return;
         }
 
-        List<Unit> enemies = getEnemiesInRange(2);
+        List<Enemy> enemies = getEnemiesInRange(2);
         if (enemies.isEmpty()) {
             messageCallback.send(name + " used Fan of Knives, but no enemies were hit.");
         } else {
@@ -67,12 +68,6 @@ public class Rogue extends Player {
                 currentEnergy, maxEnergy, attack, defense);
     }
 
-    @Override
-    public void accept(Unit other) {}
-
     public int getCurrentEnergy(){return currentEnergy;}
-    /// PLACEHOLDER
-    protected List<Unit> getEnemiesInRange(int range) {
-        return new ArrayList<>();
-    }
+
 }
