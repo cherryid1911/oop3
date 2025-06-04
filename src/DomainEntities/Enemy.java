@@ -8,8 +8,8 @@ public abstract class Enemy extends Unit {
 
 
     //_____Constructor_____
-    public Enemy(String name, char tileChar, Position position, int healthPool, int attack, int defense, int experienceValue) {
-        super(name, tileChar, position, healthPool, attack, defense);
+    public Enemy(String name, char tileChar, int healthPool, int attack, int defense, int experienceValue) {
+        super(name, tileChar, new Position(0, 0), healthPool, attack, defense);
         this.experienceValue = experienceValue;
     }
 
@@ -23,15 +23,13 @@ public abstract class Enemy extends Unit {
         return experienceValue;
     }
 
-    public abstract Direction decideMoveDirection(Player player);
-
-    public abstract void onEnemyTurn(Player player);
-
     @Override
     public abstract String description();
 
     @Override
     public abstract void onGameTick();
+
+    public abstract Direction onEnemyTurn(Player player);
 
 
     // _____Visitor_Pattern_____

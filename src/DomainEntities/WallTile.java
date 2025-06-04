@@ -7,6 +7,7 @@ public class WallTile extends Tile {
         super('#', position);
     }
 
+
     // _____Methods_____
     @Override
     public void accept(Unit unit) {

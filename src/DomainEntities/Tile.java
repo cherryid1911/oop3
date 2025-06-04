@@ -1,6 +1,7 @@
 package DomainEntities;
 
 public abstract class Tile {
+
     // _____Fields_____
     protected char tileChar;
     protected Position position;

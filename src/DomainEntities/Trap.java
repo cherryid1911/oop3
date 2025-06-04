@@ -10,9 +10,9 @@ public class Trap extends Enemy {
 
 
     //_____Constructors_____
-    public Trap(String name, char tileChar, Position position, int healthPool,
+    public Trap(String name, char tileChar, int healthPool,
                 int attack, int defense, int experienceValue, int visibilityTime, int invisibilityTime) {
-        super(name, tileChar, position, healthPool, attack, defense, experienceValue);
+        super(name, tileChar, healthPool, attack, defense, experienceValue);
         this.visibilityTime = visibilityTime;
         this.invisibilityTime = invisibilityTime;
         this.ticksCount = 0;
@@ -20,13 +20,13 @@ public class Trap extends Enemy {
     }
 
     public Trap(Trap other, Position position) {
-        super(other.getName(), other.tileChar, position, other.getHealthPool(), other.getAttack(), other.getDefense(), other.getExperienceValue());
+        super(other.getName(), other.tileChar, other.getHealthPool(), other.getAttack(), other.getDefense(), other.getExperienceValue());
         this.visibilityTime = other.visibilityTime;
         this.invisibilityTime = other.invisibilityTime;
         this.ticksCount = other.ticksCount;
         this.visible = other.visible;
+        this.position = position;
     }
-
 
 
     // _____Methods_____
@@ -48,10 +48,11 @@ public class Trap extends Enemy {
         }
 
         visible = ticksCount < visibilityTime;
+
     }
 
     @Override
-    public void onEnemyTurn(Player player) {
+    public Direction onEnemyTurn(Player player) {
         double distance = position.distance(player.getPosition());
         if (distance < 2) {
             int attackRoll = this.rollAttack();
@@ -59,21 +60,16 @@ public class Trap extends Enemy {
             int damage = Math.max(0, attackRoll - defenseRoll);
             player.takeDamage(damage);
             messageCallback.send(String.format("%s attacked %s for %d damage!", name, player.getName(), damage));
-            if (player.isDead()) {
+            if (player.isDead())
                 messageCallback.send(player.getName() + " died!");
-            }
         }
+        return Direction.STAY;
     }
 
     @Override
     public String description() {
         return String.format("Trap %s\tHP: %d/%d\tATK: %d\tDEF: %d\tEXP: %d\tVisible: %s",
                 name, currentHealth, healthPool, attack, defense, experienceValue, visible);
-    }
-
-    @Override
-    public Direction decideMoveDirection(Player player) {
-        return Direction.STAY;
     }
 
     @Override

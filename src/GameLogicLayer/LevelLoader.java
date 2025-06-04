@@ -97,6 +97,11 @@ public class LevelLoader {
             return new Trap(trap, pos);
         }
 
+        Boss boss = UnitFactory.getBossByTile(c);
+        if (boss != null) {
+            return new Boss(boss, pos);
+        }
+
         return null;
     }
 }

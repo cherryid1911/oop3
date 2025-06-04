@@ -1,6 +1,7 @@
 package DomainEntities;
 
 public class Position {
+
     // _____Fields_____
     private final int x;
     private final int y;

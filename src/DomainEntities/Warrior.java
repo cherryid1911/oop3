@@ -11,8 +11,8 @@ public class Warrior extends Player {
 
 
     //_____Constructor_____
-    public Warrior(String name, Position position, int healthPool, int attack, int defense, int abilityCooldown) {
-        super(name, position, healthPool, attack, defense);
+    public Warrior(String name, int healthPool, int attack, int defense, int abilityCooldown) {
+        super(name, healthPool, attack, defense);
         this.abilityCooldown = abilityCooldown;
         this.remainingCooldown = 0;
     }
@@ -24,13 +24,13 @@ public class Warrior extends Player {
             remainingCooldown--;
     }
 
-    public void castAbility() {
+    public void castAbility(Player player) {
         if (remainingCooldown > 0) {
             messageCallback.send(name + " tried to use Avenger's Shield but it's on cooldown (" + remainingCooldown + " turns left).");
             return;
         }
 
-        List<Unit> enemiesInRange = getEnemiesInRange(3);
+        List<Enemy> enemiesInRange = getEnemiesInRange(3);
         if (enemiesInRange.isEmpty()) {
             messageCallback.send(name + " tried to use Avenger's Shield, but no enemies are in range.");
             return;
@@ -64,14 +64,11 @@ public class Warrior extends Player {
                 name, level, experience, currentHealth, healthPool, attack, defense, remainingCooldown);
     }
 
-    public void accept(Unit other) {}
-
-    /// PLACEHOLDER
-    protected List<Unit> getEnemiesInRange(int range) {
-        throw new UnsupportedOperationException("getEnemiesInRange should be set from Game context.");
+    public int getAbilityCooldown(){
+        return abilityCooldown;
     }
 
-    public int getAbilityCooldown(){return abilityCooldown;}
-
-    public int getRemainingCooldown(){return remainingCooldown;}
+    public int getRemainingCooldown(){
+        return remainingCooldown;
+    }
 }
