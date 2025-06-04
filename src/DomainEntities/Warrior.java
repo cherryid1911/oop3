@@ -7,12 +7,12 @@ public class Warrior extends Player {
 
     // _____Fields_____
     private final int abilityCooldown;
-    private int remainingCooldown;
+    protected int remainingCooldown;
 
 
     //_____Constructor_____
     public Warrior(String name, Position position, int healthPool, int attack, int defense, int abilityCooldown) {
-        super(name, '@', position, healthPool, attack, defense);
+        super(name, position, healthPool, attack, defense);
         this.abilityCooldown = abilityCooldown;
         this.remainingCooldown = 0;
     }
@@ -67,8 +67,11 @@ public class Warrior extends Player {
     public void accept(Unit other) {}
 
     /// PLACEHOLDER
-    private List<Unit> getEnemiesInRange(int range) {
+    protected List<Unit> getEnemiesInRange(int range) {
         throw new UnsupportedOperationException("getEnemiesInRange should be set from Game context.");
     }
 
+    public int getAbilityCooldown(){return abilityCooldown;}
+
+    public int getRemainingCooldown(){return remainingCooldown;}
 }

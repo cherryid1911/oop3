@@ -32,8 +32,11 @@ public class Position {
         return new Position(this.x + dx, this.y + dy);
     }
 
-    public boolean equals(Position other) {
-        return this.x == other.x && this.y == other.y;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Position)) return false;
+        Position p = (Position) o;
+        return this.x == p.x && this.y == p.y;
     }
 
     public String toString() {

@@ -16,7 +16,7 @@ public class GameEngine implements MessageCallback {
     private final List<LoadedLevel> levels = new ArrayList<>();
     private Player player;
     private List<Player> playerOptions;
-
+    private boolean testMode = false;
 
     // _____Methods_____
     @Override
@@ -26,6 +26,7 @@ public class GameEngine implements MessageCallback {
 
     public void run() {
         choosePlayer();
+        if (testMode) return;
         loadLevels();
 
         for (LoadedLevel loadedLevel : levels) {
@@ -82,5 +83,9 @@ public class GameEngine implements MessageCallback {
             System.out.println("Failed to load levels: " + e.getMessage());
             System.exit(1);
         }
+    }
+
+    public void enableTestMode() {
+        this.testMode = true;
     }
 }

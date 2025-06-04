@@ -7,9 +7,9 @@ import java.util.Random;
 public class Mage extends Player {
     // _____Fields_____
     private int manaPool;
-    private int currentMana;
+    protected int currentMana;
     private final int manaCost;
-    private int spellPower;
+    protected int spellPower;
     private final int hitsCount;
     private final int abilityRange;
 
@@ -84,9 +84,16 @@ public class Mage extends Player {
 
 
     /// PLACEHOLDER
-    private List<Unit> getEnemiesInRange(int range) {
+    protected List<Unit> getEnemiesInRange(int range) {
         throw new UnsupportedOperationException("getEnemiesInRange should be set from Game context.");
     }
 
+    public int getCurrentMana() {
+        return currentMana;
+    }
+
+    public int getSpellPower() {
+        return spellPower;
+    }
 
 }

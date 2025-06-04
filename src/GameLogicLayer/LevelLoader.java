@@ -86,7 +86,7 @@ public class LevelLoader {
         return new LoadedLevel(board, player, enemies, filePath);
     }
 
-    private static Enemy createEnemyFromChar(char c, Position pos) {
+    protected static Enemy createEnemyFromChar(char c, Position pos) {
         Monster monster = UnitFactory.getMonsterByTile(c);
         if (monster != null) {
             return new Monster(monster, pos);

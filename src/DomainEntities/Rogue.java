@@ -6,7 +6,7 @@ import java.util.List;
 public class Rogue extends Player {
     // _____Fields_____
     private final int energyCost;
-    private int currentEnergy;
+    protected int currentEnergy;
     private final int maxEnergy = 100;
 
 
@@ -70,8 +70,9 @@ public class Rogue extends Player {
     @Override
     public void accept(Unit other) {}
 
+    public int getCurrentEnergy(){return currentEnergy;}
     /// PLACEHOLDER
-    private List<Unit> getEnemiesInRange(int range) {
+    protected List<Unit> getEnemiesInRange(int range) {
         return new ArrayList<>();
     }
 }
