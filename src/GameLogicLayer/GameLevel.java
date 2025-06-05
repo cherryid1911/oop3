@@ -30,24 +30,27 @@ public class GameLevel {
 
     // _____Methods_____
     public void gameTick(char input) {
-        Position newPos = null;
+        Position destPos = null;
         Position oldPos = player.getPosition();
 
         switch (input) {
-            case 'w' -> newPos = oldPos.offset(0, -1);
-            case 's' -> newPos = oldPos.offset(0, 1);
-            case 'a' -> newPos = oldPos.offset(-1, 0);
-            case 'd' -> newPos = oldPos.offset(1, 0);
+            case 'w' -> destPos = oldPos.offset(0, -1);
+            case 's' -> destPos = oldPos.offset(0, 1);
+            case 'a' -> destPos = oldPos.offset(-1, 0);
+            case 'd' -> destPos = oldPos.offset(1, 0);
             case 'e' -> player.castAbility(player);
             case 'q' -> messageCallback.send("Player chose to wait.");
             default -> messageCallback.send("Invalid input: " + input);
         }
 
-        if (newPos != null && isInsideBoard(newPos)) {
-            Tile destTile = board.getTile(newPos);
+        if (destPos != null && isInsideBoard(destPos)) {
+            Tile destTile = board.getTile(destPos);
             destTile.accept(player);
-            board.setTile(oldPos, new EmptyTile(oldPos));
-            board.setTile(player.getPosition(), player);
+            Position newPos = player.getPosition();
+            if (!newPos.equals(oldPos)) {
+                board.setTile(oldPos, new EmptyTile(oldPos));
+                board.setTile(newPos, player);
+            }
         }
         player.onGameTick();
 
@@ -58,13 +61,17 @@ public class GameLevel {
                 Position oldPos2 = enemy.getPosition();
                 enemy.onGameTick();
                 Direction dir = enemy.onEnemyTurn(player);
-                Position newPos2 = getNextPosition(enemy.getPosition(), dir);
-                if (newPos2 != null && isInsideBoard(newPos2)) {
-                    Tile destTile = board.getTile(newPos2);
+                Position destPos2 = getNextPosition(enemy.getPosition(), dir);
+                if (destPos2 != null && isInsideBoard(destPos2)) {
+                    Tile destTile = board.getTile(destPos2);
                     destTile.accept(enemy);
-                    if (!enemy.isDead()) {
+                    Position newPos2 = enemy.getPosition();
+                    if (!enemy.isDead() && !newPos2.equals(oldPos2)) {
                         board.setTile(oldPos2, new EmptyTile(oldPos2));
                         board.setTile(newPos2, enemy);
+                    }
+                    else {
+
                     }
                 }
             }

@@ -68,7 +68,7 @@ public abstract class Player extends Unit implements HeroicUnit {
 
         if (enemy.isDead()) {
             gainExperience(enemy.getExperienceValue());
-            messageCallback.send(enemy.getName() + " died.");
+            setPosition(enemy.position);
         }
     }
 
