@@ -108,7 +108,4 @@ public abstract class Player extends Unit implements HeroicUnit {
     public void visit(Trap trap){
         engage(trap);
     }
-
-
-
 }

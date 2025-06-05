@@ -17,8 +17,15 @@ public class GameEngine implements MessageCallback {
     private final List<LoadedLevel> levels = new ArrayList<>();
     private Player player;
     private List<Player> playerOptions;
-    private boolean testMode = false;
+    private final String levelsDirectory;
 
+    public GameEngine(String levelsDirectory) {
+        this.levelsDirectory = levelsDirectory;
+    }
+
+    public GameEngine() {
+        this("levels");
+    }
 
     // _____Methods_____
     @Override
@@ -28,7 +35,6 @@ public class GameEngine implements MessageCallback {
 
     public void run() {
         choosePlayer();
-        if (testMode) return;
         loadLevels();
 
         for (LoadedLevel loadedLevel : levels) {
@@ -36,6 +42,7 @@ public class GameEngine implements MessageCallback {
 
             while (!loadedLevel.getPlayer().isDead() && !gameLevel.isLevelComplete()) {
                 System.out.println(gameLevel.display());
+                System.out.println(player.description());
                 System.out.print("Enter command (w/a/s/d/e/q): ");
                 String input = scanner.nextLine();
                 if (!input.isEmpty()) {
@@ -59,7 +66,7 @@ public class GameEngine implements MessageCallback {
 
         System.out.println("Choose a player:");
         for (int i = 0; i < playerOptions.size(); i++) {
-            System.out.printf("%d. %s%n", i + 1, playerOptions.get(i).getName());
+            System.out.printf("%d. %s%n", i + 1, playerOptions.get(i).description());
         }
 
         int choice = -1;
@@ -74,20 +81,16 @@ public class GameEngine implements MessageCallback {
     }
 
     private void loadLevels() {
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get("levels"), "*.txt")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(levelsDirectory), "*.txt")) {
             for (Path path : stream) {
                 LoadedLevel level = LevelLoader.loadLevel(path, player);
                 levels.add(level);
             }
             levels.sort(Comparator.comparing(lvl -> lvl.getPath().getFileName().toString()));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Failed to load levels: " + e.getMessage());
             System.exit(1);
         }
     }
 
-    public void enableTestMode() {
-        this.testMode = true;
-    }
 }

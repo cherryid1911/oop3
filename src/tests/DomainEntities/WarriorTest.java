@@ -3,120 +3,89 @@ package DomainEntities;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class WarriorTest {
 
-    private TestWarrior warrior;
-    private MockMessageCallback callback;
+    private Warrior warrior;
+    private DummyEnemy enemy;
+    private StringBuilder output;
 
     @Before
     public void setUp() {
-        warrior = new TestWarrior("Jon", new Position(1, 1),
-                300, 30, 5, 3);
-        callback = new MockMessageCallback();
-        warrior.setMessageCallback(callback);
+        warrior = new Warrior("Arthur", 300, 50, 10, 3);
+        output = new StringBuilder();
+        warrior.initialize(msg -> output.append(msg).append("\n"));
+
+        enemy = new DummyEnemy("Dummy", 100);
+        enemy.setPosition(new Position(1, 0));
+        warrior.setPosition(new Position(0, 0));
+        warrior.setEnemies(List.of(enemy));
     }
 
     @Test
-    public void testCooldownStartsAtZero() {
-        assertEquals(0, warrior.getRemainingCooldown());
+    public void testCastAbilityWithEnemyInRange() {
+        warrior.castAbility(warrior);
+
+        String log = output.toString();
+        assertTrue(log.contains("Arthur used Avenger's Shield on Dummy"));
+        assertTrue(log.contains("healed"));
+        assertEquals(3, warrior.getRemainingCooldown());
     }
 
     @Test
-    public void testOnGameTick_DecreasesCooldown() {
-        warrior.setRemainingCooldown(2);
-        warrior.onGameTick();
-        assertEquals(1, warrior.getRemainingCooldown());
-    }
-
-    @Test
-    public void testCastAbility_OnCooldown() {
-        warrior.setRemainingCooldown(1);
-        warrior.setEnemies(List.of(new TestEnemy("Dummy", 100)));
-        warrior.castAbility();
-        assertTrue(callback.contains("it's on cooldown"));
-    }
-
-    @Test
-    public void testCastAbility_NoEnemies() {
+    public void testCastAbilityNoEnemies() {
         warrior.setEnemies(List.of());
-        warrior.castAbility();
-        assertTrue(callback.contains("no enemies are in range"));
-    }
+        warrior.castAbility(warrior);
 
-    @Test
-    public void testCastAbility_DealsDamageAndHeals() {
-        warrior.setEnemies(List.of(new TestEnemy("Dummy", 50)));
-        warrior.setRemainingCooldown(0);
-        warrior.setCurrentHealth(100);
-        warrior.castAbility();
-        assertTrue(callback.contains("used Avenger's Shield on Dummy"));
-        assertTrue(warrior.getCurrentHealth() > 100);
-        assertEquals(warrior.getAbilityCooldown(), warrior.getRemainingCooldown());
-    }
-
-    @Test
-    public void testLevelUp_ResetsCooldownAndIncreasesStats() {
-        warrior.setRemainingCooldown(2);
-        int oldHP = warrior.getHealthPool();
-        int oldAtk = warrior.getAttack();
-        int oldDef = warrior.getDefense();
-        warrior.gainExperience(100);
+        String log = output.toString();
+        assertTrue(log.contains("no enemies are in range"));
         assertEquals(0, warrior.getRemainingCooldown());
-        assertTrue(warrior.getHealthPool() > oldHP);
-        assertTrue(warrior.getAttack() > oldAtk);
-        assertTrue(warrior.getDefense() > oldDef);
     }
 
-    private static class TestWarrior extends Warrior {
-        private List<Unit> enemies = new ArrayList<>();
+    @Test
+    public void testCastAbilityOnCooldown() {
+        warrior.castAbility(warrior);
+        output.setLength(0); // clear old output
 
-        public TestWarrior(String name, Position pos, int hp, int atk, int def, int cooldown) {
-            super(name, pos, hp, atk, def, cooldown);
-        }
-
-        public void setEnemies(List<Unit> e) {
-            enemies = e;
-        }
-
-        public void setRemainingCooldown(int cd) {
-            this.remainingCooldown = cd;
-        }
-
-        public void setCurrentHealth(int hp) {
-            this.currentHealth = hp;
-        }
-
-        protected List<Unit> getEnemiesInRange(int range) {
-            return enemies;
-        }
+        warrior.castAbility(warrior); // immediately try again
+        String log = output.toString();
+        assertTrue(log.contains("it's on cooldown"));
     }
 
-    private static class TestEnemy extends Unit {
-        public TestEnemy(String name, int hp) {
-            super(name, 'E', new Position(0, 0), hp, 0, 0);
-        }
+    @Test
+    public void testOnGameTickReducesCooldown() {
+        warrior.castAbility(warrior);
+        assertEquals(3, warrior.getRemainingCooldown());
 
-        @Override public void onGameTick() {}
-        @Override public String description() { return name; }
-        @Override public void accept(Unit other) {}
-        @Override public void visit(Player p) {}
-        @Override public void visit(Monster m) {}
-        @Override public void visit(Trap t) {}
-        @Override public void visit(WallTile w) {}
-        @Override public void visit(EmptyTile e) {}
-        @Override public int rollDefense() { return 0; }
+        warrior.onGameTick();
+        assertEquals(2, warrior.getRemainingCooldown());
+
+        warrior.onGameTick();
+        warrior.onGameTick();
+        assertEquals(0, warrior.getRemainingCooldown());
     }
 
-    private static class MockMessageCallback implements MessageCallback {
-        List<String> messages = new ArrayList<>();
-        @Override public void send(String msg) { messages.add(msg); }
-        public boolean contains(String fragment) {
-            return messages.stream().anyMatch(msg -> msg.contains(fragment));
+    @Test
+    public void testLevelUpIncreasesStats() {
+        warrior.gainExperience(500); // force level-up
+        assertTrue(warrior.getCurrentHealth() > 300);
+        assertTrue(warrior.getAttack() > 50);
+        assertTrue(warrior.getDefense() > 10);
+        assertEquals(0, warrior.getRemainingCooldown());
+    }
+
+    // DummyEnemy is a basic test double
+    private static class DummyEnemy extends Monster {
+        public DummyEnemy(String name, int hp) {
+            super(name, 'M', hp, 0, 0, 10, 5);
+        }
+
+        @Override
+        public void takeDamage(int dmg) {
+            super.takeDamage(dmg);
         }
     }
 }

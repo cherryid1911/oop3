@@ -75,7 +75,7 @@ public class Mage extends Player {
 
     @Override
     public String description() {
-        return String.format("Mage %s\tLevel %d\tXP: %d\tHP: %d/%d\tMana: %d/%d\tSP: %d",
+        return String.format("Mage %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tMana: %d/%d\tSpell Power: %d",
                 name, level, experience, currentHealth, healthPool, currentMana, manaPool, spellPower);
     }
 

@@ -1,39 +1,25 @@
 package UI;
 
-import DomainEntities.*;
-import Utils.UnitFactory;
-import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class GameEngineTest {
 
-    private GameEngine engine;
-
-    @Before
-    public void setUp() {
-        engine = new GameEngine();
-    }
-
     @Test
     public void testSendOutputsToConsole() {
-        engine.send("Hello");
-    }
+        GameEngine engine = new GameEngine();
 
-    @Test
-    public void testChoosePlayer_SelectsValidPlayer() {
-        List<Player> allPlayers = UnitFactory.getDefaultPlayers();
-        assertFalse(allPlayers.isEmpty());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+        System.setOut(new PrintStream(out));
 
-        String input = "1\n";
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        engine.send("Hello from test");
 
-        GameEngine localEngine = new GameEngine();
-        localEngine.enableTestMode();
-        localEngine.run();
+        System.setOut(originalOut); // restore output
+        assertTrue(out.toString().contains("Hello from test"));
     }
 }

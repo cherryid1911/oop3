@@ -10,29 +10,34 @@ public class BoardTest {
 
     private Board board;
     private Position pos;
-    private EmptyTile empty;
-    private WallTile wall;
 
     @Before
     public void setUp() {
-        board = new Board(3, 3);
-        pos = new Position(1, 1);
-        empty = new EmptyTile(pos);
-        wall = new WallTile(pos);
+        board = new Board(5, 5);
+        pos = new Position(2, 3);
     }
 
     @Test
-    public void testGetRowsAndCols() {
-        assertEquals(3, board.getRows());
-        assertEquals(3, board.getCols());
+    public void testBoardInitialization() {
+        assertEquals(5, board.getRows());
+        assertEquals(5, board.getCols());
     }
 
     @Test
     public void testSetAndGetTile() {
-        board.setTile(pos, empty);
-        assertEquals(empty, board.getTile(pos));
-
+        Tile wall = new WallTile(pos);
         board.setTile(pos, wall);
-        assertEquals(wall, board.getTile(pos));
+        Tile retrieved = board.getTile(pos);
+        assertSame("Expected same tile instance", wall, retrieved);
+    }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testOutOfBoundsGet() {
+        board.getTile(new Position(10, 10));
+    }
+
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testOutOfBoundsSet() {
+        board.setTile(new Position(-1, 0), new EmptyTile(new Position(-1, 0)));
     }
 }

@@ -1,37 +1,52 @@
 package GameLogicLayer;
 
 import DomainEntities.*;
+import Utils.UnitFactory;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class LevelLoaderTest {
 
-    @Test
-    public void testCreateMonsterFromChar() {
-        Monster m = (Monster) LevelLoaderTestHelper.createEnemyFromChar('s');
-        assertNotNull(m);
-        assertEquals("Lannister Soldier", m.getName());
+    private Player testPlayer;
+
+    @Before
+    public void setUp() {
+        testPlayer = new Warrior("TestWarrior", 100, 10, 5, 1);
     }
 
     @Test
-    public void testCreateTrapFromChar() {
-        Trap t = (Trap) LevelLoaderTestHelper.createEnemyFromChar('B');
-        assertNotNull(t);
-        assertEquals("Bonus Trap", t.getName());
-    }
+    public void testLoadValidLevel() throws IOException {
+        // Create a temporary level file
+        String levelContent = """
+                .....
+                ..@..
+                ..s..
+                ..#..
+                .....""";
 
-    @Test
-    public void testCreateUnknownCharReturnsNull() {
-        Enemy unknown = LevelLoaderTestHelper.createEnemyFromChar('!');
-        assertNull(unknown);
-    }
+        Path tempLevelPath = Files.createTempFile("testLevel", ".txt");
+        Files.writeString(tempLevelPath, levelContent);
 
-    // Access LevelLoader’s private method via inner static subclass
-    static class LevelLoaderTestHelper extends LevelLoader {
-        public static Enemy createEnemyFromChar(char c) {
-            Position dummyPos = new Position(0, 0);
-            return LevelLoader.createEnemyFromChar(c, dummyPos);
-        }
+        LevelLoader.LoadedLevel loaded = LevelLoader.loadLevel(tempLevelPath, testPlayer);
+
+        assertNotNull(loaded);
+        assertEquals(5, loaded.getBoard().getRows());
+        assertEquals(5, loaded.getBoard().getCols());
+
+        Tile playerTile = loaded.getBoard().getTile(testPlayer.getPosition());
+        assertSame(testPlayer, playerTile);
+
+        List<Enemy> enemies = loaded.getEnemies();
+        assertEquals(1, enemies.size());
+        assertEquals('s', enemies.get(0).getTileChar());
+
+        Files.deleteIfExists(tempLevelPath);
     }
 }

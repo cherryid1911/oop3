@@ -1,53 +1,48 @@
 package DomainEntities;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class PositionTest {
 
-    private Position p1;
-    private Position p2;
-
-    @Before
-    public void setUp() {
-        p1 = new Position(3, 4);
-        p2 = new Position(6, 8);
+    @Test
+    public void testGetXAndY() {
+        Position pos = new Position(3, 7);
+        assertEquals(3, pos.getX());
+        assertEquals(7, pos.getY());
     }
 
     @Test
-    public void testGetXandY() {
-        assertEquals(3, p1.getX());
-        assertEquals(4, p1.getY());
+    public void testDistanceToItself() {
+        Position pos = new Position(5, 5);
+        assertEquals(0.0, pos.distance(pos), 0.0001);
     }
 
     @Test
-    public void testDistance() {
-        double dist = p1.distance(p2);
-        assertEquals(5.0, dist, 0.001);
+    public void testDistanceToAnotherPosition() {
+        Position pos1 = new Position(0, 0);
+        Position pos2 = new Position(3, 4);
+        assertEquals(5.0, pos1.distance(pos2), 0.0001);
     }
 
     @Test
     public void testOffset() {
-        Position offset = p1.offset(2, -1);
-        assertEquals(new Position(5, 3), offset);
+        Position pos = new Position(2, 3);
+        Position offsetPos = pos.offset(1, -1);
+        assertEquals(new Position(3, 2), offsetPos);
+        assertEquals(2, pos.getX()); // Ensure immutability
+        assertEquals(3, pos.getY());
     }
 
     @Test
-    public void testEqualsTrue() {
-        Position other = new Position(3, 4);
-        assertTrue(p1.equals(other));
-    }
+    public void testEqualsAndToString() {
+        Position p1 = new Position(1, 2);
+        Position p2 = new Position(1, 2);
+        Position p3 = new Position(2, 1);
 
-    @Test
-    public void testEqualsFalse() {
-        Position other = new Position(4, 4);
-        assertFalse(p1.equals(other));
-    }
-
-    @Test
-    public void testToString() {
-        assertEquals("(3,4)", p1.toString());
+        assertEquals(p1, p2);
+        assertNotEquals(p1, p3);
+        assertEquals("(1,2)", p1.toString());
     }
 }

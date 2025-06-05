@@ -60,7 +60,7 @@ public class Warrior extends Player {
     }
 
     public String description() {
-        return String.format("Warrior %s\tLevel %d\tXP: %d\tHP: %d/%d\tATK: %d\tDEF: %d\tCD: %d",
+        return String.format("Warrior %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tATK: %d\tDEF: %d\tCooldown: %d",
                 name, level, experience, currentHealth, healthPool, attack, defense, remainingCooldown);
     }
 
@@ -71,4 +71,7 @@ public class Warrior extends Player {
     public int getRemainingCooldown(){
         return remainingCooldown;
     }
+
+
+
 }

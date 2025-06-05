@@ -63,7 +63,7 @@ public class Rogue extends Player {
 
     @Override
     public String description() {
-        return String.format("Rogue %s\tLevel %d\tXP: %d\tHP: %d/%d\tEnergy: %d/%d\tATK: %d\tDEF: %d",
+        return String.format("Rogue %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tEnergy: %d/%d\tATK: %d\tDEF: %d",
                 name, level, experience, currentHealth, healthPool,
                 currentEnergy, maxEnergy, attack, defense);
     }

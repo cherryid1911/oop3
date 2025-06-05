@@ -1,46 +1,48 @@
 package DomainEntities;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class EmptyTileTest {
 
-    private EmptyTile emptyTile;
-    private TestUnit unit;
-    private Position initialPosition;
-    private Position emptyTilePosition;
-
-    @Before
-    public void setUp() {
-        emptyTilePosition = new Position(2, 2);
-        initialPosition = new Position(0, 0);
-        emptyTile = new EmptyTile(emptyTilePosition);
-        unit = new TestUnit(initialPosition);
+    @Test
+    public void testToStringReturnsDot() {
+        EmptyTile empty = new EmptyTile(new Position(1, 2));
+        assertEquals(".", empty.toString());
     }
 
     @Test
-    public void testVisitMovesUnitToEmptyTile() {
-        emptyTile.accept(unit);
-        assertEquals(emptyTilePosition, unit.getPosition());
+    public void testAcceptCallsVisit() {
+        EmptyTile empty = new EmptyTile(new Position(0, 0));
+        DummyUnit dummy = new DummyUnit();
+
+        empty.accept(dummy);
+
+        assertTrue("Expected visit(EmptyTile) to be called", dummy.visitedEmpty);
+        assertEquals(empty.getPosition(), dummy.getPosition()); // position should be updated
     }
 
-    private static class TestUnit extends Unit {
-        public TestUnit(Position pos) {
-            super("Mover", '@', pos, 100, 10, 5);
+    // Dummy Unit to test accept/visit
+    private static class DummyUnit extends Unit {
+        boolean visitedEmpty = false;
+
+        public DummyUnit() {
+            super("TestUnit", '@', new Position(0, 0), 10, 5, 2);
         }
 
-        @Override public void visit(EmptyTile e) {
-            setPosition(e.getPosition());
+        @Override
+        public void visit(EmptyTile tile) {
+            this.visitedEmpty = true;
+            this.setPosition(tile.getPosition());
         }
 
-        @Override public void onGameTick() {}
-        @Override public String description() { return "test unit"; }
-        @Override public void accept(Unit o) {}
+        // Stub everything else
         @Override public void visit(Player p) {}
         @Override public void visit(Monster m) {}
         @Override public void visit(Trap t) {}
-        @Override public void visit(WallTile w) {}
+        @Override public void onGameTick() {}
+        @Override public String description() { return "Dummy"; }
+        @Override public void accept(Unit other) {}
     }
 }

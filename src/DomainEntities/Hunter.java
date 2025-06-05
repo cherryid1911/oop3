@@ -73,7 +73,7 @@ public class Hunter extends Player {
 
     @Override
     public String description() {
-        return String.format("Hunter %s\tLevel %d\tXP: %d\tHP: %d/%d\tATK: %d\tDEF: %d\tArrows: %d\tRange: %d",
+        return String.format("Hunter %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tATK: %d\tDEF: %d\tArrows: %d\tRange: %d",
                 name, level, experience, currentHealth, healthPool, attack, defense, arrowsCount, range);
     }
 }
