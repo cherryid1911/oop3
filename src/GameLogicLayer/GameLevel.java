@@ -70,9 +70,6 @@ public class GameLevel {
                         board.setTile(oldPos2, new EmptyTile(oldPos2));
                         board.setTile(newPos2, enemy);
                     }
-                    else {
-
-                    }
                 }
             }
             else {
