@@ -111,7 +111,7 @@ public class GameLevel {
             for (int x = 0; x < board.getCols(); x++) {
                 Position pos = new Position(x, y);
                 Tile tile = board.getTile(pos);
-                sb.append(tile.getTileChar());
+                sb.append(tile.toString());
             }
             sb.append('\n');
         }
