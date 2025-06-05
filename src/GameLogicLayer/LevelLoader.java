@@ -15,27 +15,23 @@ public class LevelLoader {
 
         // _____Fields_____
         private final Board board;
-        private final Player player;
         private final List<Enemy> enemies;
         private final Path path;
+        private Position playerPos;
 
 
         //_____Constructor_____
-        public LoadedLevel(Board board, Player player, List<Enemy> enemies, Path path) {
+        public LoadedLevel(Board board, List<Enemy> enemies, Path path, Position playerPos) {
             this.board = board;
-            this.player = player;
             this.enemies = enemies;
             this.path = path;
+            this.playerPos = playerPos;
         }
 
 
         // _____Getters_____
         public Board getBoard() {
             return board;
-        }
-
-        public Player getPlayer() {
-            return player;
         }
 
         public List<Enemy> getEnemies() {
@@ -45,6 +41,8 @@ public class LevelLoader {
         public Path getPath() {
             return path;
         }
+
+        public Position getPlayerPos() { return playerPos; }
     }
 
 
@@ -56,6 +54,7 @@ public class LevelLoader {
 
         Board board = new Board(rows, cols);
         List<Enemy> enemies = new ArrayList<>();
+        Position playerPos = new Position(0, 0);
 
         for (int y = 0; y < rows; y++) {
             String line = lines.get(y);
@@ -67,8 +66,8 @@ public class LevelLoader {
                     case '.' -> board.setTile(pos, new EmptyTile(pos));
                     case '#' -> board.setTile(pos, new WallTile(pos));
                     case '@' -> {
-                        player.setPosition(pos);
                         board.setTile(pos, player);
+                        playerPos = pos;
                     }
                     default -> {
                         Enemy enemy = createEnemyFromChar(c, pos);
@@ -83,7 +82,7 @@ public class LevelLoader {
             }
         }
 
-        return new LoadedLevel(board, player, enemies, filePath);
+        return new LoadedLevel(board, enemies, filePath, playerPos);
     }
 
     protected static Enemy createEnemyFromChar(char c, Position pos) {

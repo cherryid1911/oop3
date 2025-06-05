@@ -38,9 +38,10 @@ public class GameEngine implements MessageCallback {
         loadLevels();
 
         for (LoadedLevel loadedLevel : levels) {
-            GameLevel gameLevel = new GameLevel(loadedLevel.getBoard(), loadedLevel.getPlayer(), loadedLevel.getEnemies(), this);
+            GameLevel gameLevel = new GameLevel(loadedLevel.getBoard(), player, loadedLevel.getEnemies(), this);
+            player.setPosition(loadedLevel.getPlayerPos());
 
-            while (!loadedLevel.getPlayer().isDead() && !gameLevel.isLevelComplete()) {
+            while (!player.isDead() && !gameLevel.isLevelComplete()) {
                 System.out.println(gameLevel.display());
                 System.out.println(player.description());
                 System.out.print("Enter command (w/a/s/d/e/q): ");
@@ -50,8 +51,8 @@ public class GameEngine implements MessageCallback {
                 }
             }
 
-            if (loadedLevel.getPlayer().isDead()) {
-                loadedLevel.getPlayer().deadChar();
+            if (player.isDead()) {
+                player.deadChar();
                 System.out.println(gameLevel.display());
                 System.out.println("You died. Game over.");
                 return;
