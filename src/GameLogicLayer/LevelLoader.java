@@ -52,7 +52,7 @@ public class LevelLoader {
     public static LoadedLevel loadLevel(Path filePath, Player player) throws IOException {
         List<String> lines = Files.readAllLines(filePath);
         int rows = lines.size();
-        int cols = lines.get(0).length();
+        int cols = lines.getFirst().length();
 
         Board board = new Board(rows, cols);
         List<Enemy> enemies = new ArrayList<>();
