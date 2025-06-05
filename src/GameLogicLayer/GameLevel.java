@@ -45,14 +45,9 @@ public class GameLevel {
 
         if (newPos != null && isInsideBoard(newPos)) {
             Tile destTile = board.getTile(newPos);
-
-            if (destTile instanceof EmptyTile) {
-                board.setTile(oldPos, new EmptyTile(oldPos));
-                player.setPosition(newPos);
-                board.setTile(newPos, player);
-                System.out.println("old: " + oldPos);
-                System.out.println("new: " + newPos);
-            }
+            destTile.accept(player);
+            board.setTile(oldPos, new EmptyTile(oldPos));
+            board.setTile(player.getPosition(), player);
         }
         player.onGameTick();
 
@@ -60,22 +55,18 @@ public class GameLevel {
         while (it.hasNext()) {
             Enemy enemy = it.next();
             if (!enemy.isDead()) {
+                Position oldPos2 = enemy.getPosition();
                 enemy.onGameTick();
-                enemy.onEnemyTurn(player);
                 Direction dir = enemy.onEnemyTurn(player);
                 Position newPos2 = getNextPosition(enemy.getPosition(), dir);
                 if (newPos2 != null && isInsideBoard(newPos2)) {
                     Tile destTile = board.getTile(newPos2);
-
-                    if (destTile instanceof EmptyTile) {
-                        board.setTile(enemy.getPosition(), new EmptyTile(enemy.getPosition()));
-                        enemy.setPosition(newPos2);
+                    destTile.accept(enemy);
+                    if (!enemy.isDead()) {
+                        board.setTile(oldPos2, new EmptyTile(oldPos2));
                         board.setTile(newPos2, enemy);
-                    } else {
-                        destTile.accept(enemy);
                     }
                 }
-
             }
             else {
                 board.setTile(enemy.getPosition(), new EmptyTile(enemy.getPosition()));
