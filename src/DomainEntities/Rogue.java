@@ -49,7 +49,7 @@ public class Rogue extends Player {
             messageCallback.send(String.format(" - Hit %s for %d damage (defense roll: %d)",
                     target.getName(), damage, defenseRoll));
             if (target.isDead()) {
-                messageCallback.send("   " + target.getName() + " died!");
+                target.tileChar = '.';
             }
         }
     }
