@@ -45,8 +45,8 @@ public class Hunter extends Player {
             messageCallback.send(getName() + " shot " + closest.getName() + " for " + dmg + " damage.");
 
             if (closest.isDead()) {
-                messageCallback.send(closest.getName() + " died.");
                 gainExperience(closest.getExperienceValue());
+                closest.tileChar = '.';
             }
         } else {
             messageCallback.send(getName() + " found no enemies in range.");

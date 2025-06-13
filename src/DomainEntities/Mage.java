@@ -58,7 +58,7 @@ public class Mage extends Player {
             messageCallback.send(String.format("%s hits %s for %d damage (defense roll: %d)",
                     name, target.getName(), damage, defenseRoll));
             if (target.isDead()) {
-                messageCallback.send(target.getName() + " died!");
+                target.tileChar = '.';
                 enemies.remove(target);
             }
             hits++;
@@ -75,8 +75,8 @@ public class Mage extends Player {
 
     @Override
     public String description() {
-        return String.format("Mage %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tMana: %d/%d\tSpell Power: %d",
-                name, level, experience, currentHealth, healthPool, currentMana, manaPool, spellPower);
+        return String.format("Mage %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tMana: %d/%d\tSpell Power: %d\t Attack: %d\t Defense: %d",
+                name, level, experience, currentHealth, healthPool, currentMana, manaPool, spellPower, attack, defense);
     }
 
     public int getCurrentMana() {

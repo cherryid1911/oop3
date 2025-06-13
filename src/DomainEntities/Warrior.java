@@ -48,6 +48,9 @@ public class Warrior extends Player {
         messageCallback.send(String.format(
                 "%s used Avenger's Shield on %s for %d damage and healed for %d.",
                 name, target.getName(), damage, heal));
+
+        if (target.isDead())
+            target.tileChar = '.';
     }
 
     protected void levelUp() {

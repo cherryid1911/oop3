@@ -73,7 +73,7 @@ public class GameLevel {
                 }
             }
             else {
-                board.setTile(enemy.getPosition(), new EmptyTile(enemy.getPosition()));
+                // board.setTile(enemy.getPosition(), player);
                 messageCallback.send(enemy.getName() + " was slain!");
                 it.remove();
             }
