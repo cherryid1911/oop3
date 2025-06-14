@@ -1,6 +1,6 @@
 package DomainEntities;
 
-public abstract class Tile {
+public abstract class Tile implements Visitable {
 
     // _____Fields_____
     protected char tileChar;
@@ -23,7 +23,7 @@ public abstract class Tile {
         return position;
     }
 
-    public abstract void accept(Unit unit);
+    public abstract void accept(Visitor visitor);
 
     public abstract String toString();
 

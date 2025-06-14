@@ -88,8 +88,8 @@ public abstract class Player extends Unit implements HeroicUnit {
 
 
     // _____Visitor_Pattern_____
-    public void accept(Unit other){
-        other.visit(this);
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 
     public void visit(Player player) {

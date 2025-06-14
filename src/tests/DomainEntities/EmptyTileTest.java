@@ -38,11 +38,17 @@ public class EmptyTileTest {
         }
 
         // Stub everything else
-        @Override public void visit(Player p) {}
-        @Override public void visit(Monster m) {}
-        @Override public void visit(Trap t) {}
-        @Override public void onGameTick() {}
-        @Override public String description() { return "Dummy"; }
-        @Override public void accept(Unit other) {}
+        @Override
+        public void visit(Player p) {}
+        @Override
+        public void visit(Monster m) {}
+        @Override
+        public void visit(Trap t) {}
+        @Override
+        public void onGameTick() {}
+        @Override
+        public String description() { return "Dummy"; }
+        @Override
+        public void accept(Visitor visitor) {}
     }
 }

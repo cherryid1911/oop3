@@ -10,8 +10,8 @@ public class WallTile extends Tile {
 
     // _____Methods_____
     @Override
-    public void accept(Unit unit) {
-        unit.visit(this);
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

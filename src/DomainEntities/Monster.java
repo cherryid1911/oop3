@@ -78,8 +78,8 @@ public class Monster extends Enemy {
 
     // _____Visitor_Pattern_____
     @Override
-    public void accept(Unit other) {
-        other.visit(this);
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
     }
 
     @Override

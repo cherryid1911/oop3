@@ -35,7 +35,7 @@ public abstract class Enemy extends Unit {
 
     // _____Visitor_Pattern_____
     @Override
-    public abstract void accept(Unit other);
+    public abstract void accept(Visitor visitor);
 
     @Override
     public abstract void visit(Player player);

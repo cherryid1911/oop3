@@ -1,6 +1,6 @@
 package DomainEntities;
 
-public abstract class Unit extends Tile {
+public abstract class Unit extends Tile implements Visitor {
 
     // _____Fields_____
     protected String name;
@@ -77,7 +77,7 @@ public abstract class Unit extends Tile {
 
 
     // _____Visitor_Pattern_____
-    public abstract void accept(Unit other);
+    public abstract void accept(Visitor visitor);
 
     public void visit(WallTile wall) {
         // Do nothing

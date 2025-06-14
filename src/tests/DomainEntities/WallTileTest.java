@@ -41,6 +41,6 @@ public class WallTileTest {
         @Override public void visit(Trap trap) {}
         @Override public void onGameTick() {}
         @Override public String description() { return "Dummy"; }
-        @Override public void accept(Unit other) {}
+        @Override public void accept(Visitor visitor) {}
     }
 }
