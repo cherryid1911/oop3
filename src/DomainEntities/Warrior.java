@@ -35,7 +35,6 @@ public class Warrior extends Player {
             messageCallback.send(name + " tried to use Avenger's Shield, but no enemies are in range.");
             return;
         }
-
         Unit target = enemiesInRange.get(new Random().nextInt(enemiesInRange.size()));
         int damage = (int)(0.1 * healthPool);
         target.takeDamage(damage);
@@ -43,18 +42,22 @@ public class Warrior extends Player {
         int heal = 10 * defense;
         currentHealth = Math.min(currentHealth + heal, healthPool);
 
-        remainingCooldown = abilityCooldown;
+        remainingCooldown = abilityCooldown+1;
 
         messageCallback.send(String.format(
                 "%s used Avenger's Shield on %s for %d damage and healed for %d.",
                 name, target.getName(), damage, heal));
 
-        if (target.isDead())
+        if (target.isDead()) {
             target.tileChar = '.';
+            gainExperience(target.getExperienceValue());
+            messageCallback.send(name + " gained " + target.getExperienceValue() + " xp points.");
+        }
     }
 
     protected void levelUp() {
         super.levelUp();
+        messageCallback.send(name+ " leveled up to level "+level);
         remainingCooldown = 0;
         healthPool += 5 * level;
         attack += 2 * level;
@@ -63,12 +66,8 @@ public class Warrior extends Player {
     }
 
     public String description() {
-        return String.format("Warrior %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tATK: %d\tDEF: %d\tCooldown: %d",
-                name, level, experience, currentHealth, healthPool, attack, defense, remainingCooldown);
-    }
-
-    public int getAbilityCooldown(){
-        return abilityCooldown;
+        return String.format("Warrior %s\tLevel %d\tExperience: %d/%d\tHealth: %d/%d\tATK: %d\tDEF: %d\tCooldown: %d/%d",
+                name, level, experience, 50*level, currentHealth, healthPool, attack, defense, remainingCooldown, abilityCooldown);
     }
 
     public int getRemainingCooldown(){

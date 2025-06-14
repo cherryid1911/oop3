@@ -19,6 +19,7 @@ public abstract class Enemy extends Unit {
         this.messageCallback = callback;
     }
 
+    @Override
     public int getExperienceValue() {
         return experienceValue;
     }

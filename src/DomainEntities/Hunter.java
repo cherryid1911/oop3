@@ -46,6 +46,7 @@ public class Hunter extends Player {
 
             if (closest.isDead()) {
                 gainExperience(closest.getExperienceValue());
+                messageCallback.send(name + " gained " + closest.getExperienceValue() + " xp points.");
                 closest.tileChar = '.';
             }
         } else {
@@ -66,6 +67,7 @@ public class Hunter extends Player {
     @Override
     protected void levelUp() {
         super.levelUp();
+        messageCallback.send(name+ " leveled up to level "+level);
         arrowsCount += 10 * level;
         attack += 2 * level;
         defense += level;
@@ -73,7 +75,7 @@ public class Hunter extends Player {
 
     @Override
     public String description() {
-        return String.format("Hunter %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tATK: %d\tDEF: %d\tArrows: %d\tRange: %d",
-                name, level, experience, currentHealth, healthPool, attack, defense, arrowsCount, range);
+        return String.format("Hunter %s\tLevel %d\tExperience: %d/%d\tHealth: %d/%d\tATK: %d\tDEF: %d\tArrows: %d\tRange: %d",
+                name, level, experience,50*level, currentHealth, healthPool, attack, defense, arrowsCount, range);
     }
 }

@@ -39,7 +39,6 @@ public class Rogue extends Player {
         } else {
             messageCallback.send(name + " used Fan of Knives:");
         }
-
         currentEnergy -= energyCost;
 
         for (Unit target : enemies) {
@@ -50,6 +49,8 @@ public class Rogue extends Player {
                     target.getName(), damage, defenseRoll));
             if (target.isDead()) {
                 target.tileChar = '.';
+                gainExperience(target.getExperienceValue());
+                messageCallback.send(name + " gained " + target.getExperienceValue() + " xp points.");
             }
         }
     }
@@ -57,15 +58,16 @@ public class Rogue extends Player {
     @Override
     protected void levelUp() {
         super.levelUp();
+        messageCallback.send(name+ " leveled up to level "+level);
         attack += 3 * level;
         currentEnergy = maxEnergy;
     }
 
     @Override
     public String description() {
-        return String.format("Rogue %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tEnergy: %d/%d\tATK: %d\tDEF: %d",
-                name, level, experience, currentHealth, healthPool,
-                currentEnergy, maxEnergy, attack, defense);
+        return String.format("Rogue %s\tLevel %d\tExperience: %d/%d\tHealth: %d/%d\tATK: %d\tDEF: %d\tEnergy: %d/%d",
+                name, level, experience,50*level, currentHealth, healthPool,attack, defense,
+                currentEnergy, maxEnergy);
     }
 
     public int getCurrentEnergy(){return currentEnergy;}

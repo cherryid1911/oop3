@@ -4,7 +4,7 @@ public class Main {
     public static void main(String[] args) {
         if (args.length < 1) {
             System.out.println("Usage: java -jar Assignment3.jar <levels-directory>");
-            System.exit(1); // or throw exception
+            System.exit(1);
         }
 
         String levelsDirectory = args[0];

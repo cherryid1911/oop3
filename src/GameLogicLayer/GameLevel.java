@@ -114,10 +114,6 @@ public class GameLevel {
         return sb.toString();
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
     public Player getPlayer() {
         return player;
     }

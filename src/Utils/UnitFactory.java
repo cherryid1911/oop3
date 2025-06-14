@@ -19,7 +19,7 @@ public class UnitFactory {
     public static final List<Monster> monsters = List.of(
             new Monster("Lannister Soldier", 's', 80, 8, 3, 25, 3),
             new Monster("Lannister Knight", 'k', 200, 14, 8, 50, 4),
-            new Monster("Queen’s Guard", 'q', 400, 20, 15, 100, 5),
+            new Monster("Queens Guard", 'q', 400, 20, 15, 100, 5),
             new Monster("Wright", 'z', 600, 30, 15, 100, 3),
             new Monster("Bear-Wright", 'b', 1000, 75, 30, 250, 4),
             new Monster("Giant-Wright", 'g', 1500, 100, 40, 500, 5),
@@ -28,7 +28,7 @@ public class UnitFactory {
 
     public static final List<Trap> traps = List.of(
             new Trap("Bonus Trap", 'B', 1, 1, 1, 250, 1, 5),
-            new Trap("Queen’s Trap", 'Q', 250, 50, 10, 100, 3, 7),
+            new Trap("Queens Trap", 'Q', 250, 50, 10, 100, 3, 7),
             new Trap("Death Trap", 'D', 500, 100, 20, 250, 1, 10)
     );
 

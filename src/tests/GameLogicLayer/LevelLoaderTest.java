@@ -40,7 +40,7 @@ public class LevelLoaderTest {
         assertEquals(5, loaded.getBoard().getRows());
         assertEquals(5, loaded.getBoard().getCols());
 
-        Tile playerTile = loaded.getBoard().getTile(testPlayer.getPosition());
+        Tile playerTile = loaded.getBoard().getTile(loaded.getPlayerPos());
         assertSame(testPlayer, playerTile);
 
         List<Enemy> enemies = loaded.getEnemies();

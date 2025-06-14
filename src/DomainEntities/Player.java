@@ -1,5 +1,6 @@
 package DomainEntities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Player extends Unit implements HeroicUnit {
@@ -40,7 +41,6 @@ public abstract class Player extends Unit implements HeroicUnit {
     }
 
     protected void levelUp(){
-
         healthPool += 10 * level;
         currentHealth = healthPool;
         attack += 4 * level;
@@ -49,10 +49,6 @@ public abstract class Player extends Unit implements HeroicUnit {
 
     private boolean checkLevelUp(){
         return experience >= 50 * level;
-    }
-
-    public void setMessageCallback(MessageCallback callback) {
-        this.messageCallback = callback;
     }
 
     public void initialize(MessageCallback callback) {
@@ -67,7 +63,6 @@ public abstract class Player extends Unit implements HeroicUnit {
         enemy.takeDamage(dmg);
 
         if (enemy.isDead()) {
-            gainExperience(enemy.getExperienceValue());
             setPosition(enemy.position);
         }
     }
@@ -81,10 +76,10 @@ public abstract class Player extends Unit implements HeroicUnit {
     }
 
     protected List<Enemy> getEnemiesInRange(int range) {
-        return enemies.stream()
+        return new ArrayList<>(enemies.stream()
                 .filter(e -> !e.isDead())
                 .filter(e -> position.distance(e.getPosition()) <= range)
-                .toList();
+                .toList());
     }
 
     public abstract void onGameTick();

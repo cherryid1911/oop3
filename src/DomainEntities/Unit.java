@@ -73,6 +73,8 @@ public abstract class Unit extends Tile {
 
     public abstract String description();
 
+    public int getExperienceValue() {return 0;}
+
 
     // _____Visitor_Pattern_____
     public abstract void accept(Unit other);

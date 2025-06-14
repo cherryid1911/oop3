@@ -45,7 +45,7 @@ public class Mage extends Player {
             messageCallback.send(name + " tried to cast Blizzard, but no enemies are in range.");
             return;
         }
-
+        messageCallback.send(name+ " cast Blizzard.");
         currentMana -= manaCost;
         int hits = 0;
         Random rand = new Random();
@@ -59,6 +59,8 @@ public class Mage extends Player {
                     name, target.getName(), damage, defenseRoll));
             if (target.isDead()) {
                 target.tileChar = '.';
+                gainExperience(target.getExperienceValue());
+                messageCallback.send(name + " gained " + target.getExperienceValue() + " xp points.");
                 enemies.remove(target);
             }
             hits++;
@@ -68,6 +70,7 @@ public class Mage extends Player {
     @Override
     protected void levelUp() {
         super.levelUp();
+        messageCallback.send(name+ " leveled up to level "+level);
         manaPool += 25 * level;
         currentMana = Math.min(currentMana + manaPool / 4, manaPool);
         spellPower += 10 * level;
@@ -75,8 +78,8 @@ public class Mage extends Player {
 
     @Override
     public String description() {
-        return String.format("Mage %s\tLevel %d\tExperience: %d\tHealth: %d/%d\tMana: %d/%d\tSpell Power: %d\t Attack: %d\t Defense: %d",
-                name, level, experience, currentHealth, healthPool, currentMana, manaPool, spellPower, attack, defense);
+        return String.format("Mage %s\tLevel %d\tExperience: %d/%d\tHealth: %d/%d\tATK: %d\t DEF: %d\t Mana: %d/%d\tSpell Power: %d ",
+                name, level, experience, 50*level, currentHealth, healthPool, attack, defense, currentMana, manaPool, spellPower);
     }
 
     public int getCurrentMana() {

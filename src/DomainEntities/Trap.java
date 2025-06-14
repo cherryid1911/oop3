@@ -30,15 +30,6 @@ public class Trap extends Enemy {
 
 
     // _____Methods_____
-    public int getVisibilityTime() {
-        return visibilityTime;
-    }
-
-    public int getInvisibilityTime() {
-        return invisibilityTime;
-    }
-
-
     @Override
     public void onGameTick() {
         ticksCount++;

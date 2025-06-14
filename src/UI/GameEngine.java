@@ -37,6 +37,7 @@ public class GameEngine implements MessageCallback {
         choosePlayer();
         loadLevels();
 
+
         for (LoadedLevel loadedLevel : levels) {
             GameLevel gameLevel = new GameLevel(loadedLevel.getBoard(), player, loadedLevel.getEnemies(), this);
             player.setPosition(loadedLevel.getPlayerPos());
